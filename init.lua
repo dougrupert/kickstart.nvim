@@ -1013,8 +1013,8 @@ require('lazy').setup({
 })
 
 -- Vimscript config
-local vimrc = vim.fn.stdpath 'config' .. '/vimrc.vim'
-vim.cmd.source(vimrc)
+-- local vimrc = vim.fn.stdpath 'config' .. '/vimrc.vim'
+-- vim.cmd.source(vimrc)
 
 -- sync with system clipboard on focus
 vim.api.nvim_create_autocmd({ 'FocusGained' }, {
@@ -1030,6 +1030,20 @@ vim.api.nvim_create_autocmd({ 'FocusLost' }, {
 
 -- Remove WSL2 /mnt/c/ paths
 vim.env.PATH = vim.fn.substitute(vim.env.PATH, '/mnt/c/[^:]*:', '', 'g')
+
+-- Clipboard with WSL2
+vim.g.clipboard = {
+  name = "WslClipboard",
+  copy = {
+    ["+"] = "/mnt/c/Windows/System32/clip.exe",
+    ["*"] = "/mnt/c/Windows/System32/clip.exe",
+  },
+  paste = {
+    ["+"] = '/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    ["*"] = '/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -NoLogo -NoProfile -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+  },
+  cache_enabled = true,
+}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
