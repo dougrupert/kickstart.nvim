@@ -1028,5 +1028,8 @@ vim.api.nvim_create_autocmd({ 'FocusLost' }, {
   command = [[call setreg("+", getreg("@"))]],
 })
 
+-- Remove WSL2 /mnt/c/ paths
+vim.env.PATH = vim.fn.substitute(vim.env.PATH, '/mnt/c/[^:]*:', '', 'g')
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
